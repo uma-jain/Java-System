@@ -1,0 +1,126 @@
+package com.company;
+
+import jdk.swing.interop.SwingInterOpUtils;
+
+import javax.swing.plaf.IconUIResource;
+import java.util.Scanner;
+import java.util.jar.JarOutputStream;
+
+public class Main {
+
+
+    public static void main(String[] args) {
+      Scanner sc= new Scanner(System.in);
+      int row_sum=0,col_sum=0;
+
+      int m=sc.nextInt();
+      int n=3;
+
+      int a[][]=new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j <n ; j++) {
+                a[i][j]=sc.nextInt();
+            }
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j <n ; j++) {
+                System.out.print(a[i][j]+"  ");
+            }
+            System.out.println();
+        }
+
+        //Calculates sum of each column of given matrix
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j <n ; j++) {
+                 if(a[i][j] == 0 ){
+                     row_sum=ithRow_Sum(a,i,n);
+                     col_sum=ithCol_Sum(a,m,j);
+                     System.out.println("row sum"+row_sum+"col "+col_sum);
+                     if(row_sum<=col_sum){
+                         if(row_sum%2 ==0){
+                              a[i][j]=2;
+                         }
+                         else{
+                             a[i][j]=1;
+                         }
+                     }else{
+                         if(col_sum%3 ==0){
+                             a[i][j]=3;
+                         }else{
+                             int newn=0;
+                             while(true){
+                                 if((col_sum + newn) %3 ==0){
+                                     break;
+                                 }
+                                 newn++;
+                             }
+                             a[i][j]=newn;
+                         }
+                     }
+                 }
+            }
+
+            if(!isSparse(a,m,n)){
+                break;
+            }
+        }
+
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j <n ; j++) {
+                System.out.print(a[i][j]+"  ");
+            }
+            System.out.println();
+        }
+
+
+    }
+
+    private static boolean isSparse(int[][] arr,int m, int n) {
+        int counter = 0;
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j <n; j++)
+                if (arr[i][j] == 0)
+                    counter++;
+
+
+
+
+
+
+                if(counter > ((m * n) / 2)){
+                    System.out.println("matrix is sparse");
+                    return true;
+                }else{
+                    System.out.println("matrix not sparse");
+                    return  false;
+
+                }
+    }
+
+    static int ithRow_Sum(int[][] a,int i,int n){
+        int sumRow = 0;
+        for(int j = 0; j < n; j++){
+            sumRow = sumRow + a[i][j];
+        }
+
+        System.out.println("Sum of " + (i+1) +" row: " + sumRow);
+
+        return sumRow;
+
+
+    }
+    static int ithCol_Sum(int a[][],int m,int j){
+        int sumRow = 0;
+        for(int i = 0; i< m; i++){
+            sumRow = sumRow + a[i][j];
+        }
+
+        System.out.println("Sum of " + (j+1) +" col: " + sumRow);
+
+        return sumRow;
+    }
+
+
+}
